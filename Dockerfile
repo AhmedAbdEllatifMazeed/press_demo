@@ -8,6 +8,7 @@ ENV LANG=C.UTF-8 \
     MKL_NUM_THREADS=1 \
     BENCH_DIR=/home/frappe/frappe-bench \
     BENCH_NAME=frappe-bench \
+    NODE_OPTIONS=--max-old-space-size=8192 \
     PATH="/home/frappe/.local/bin:/home/frappe/frappe-bench/env/bin:$PATH"
 
 # Install system dependencies
