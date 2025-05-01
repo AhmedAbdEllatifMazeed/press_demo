@@ -78,7 +78,7 @@ RUN cd frappe-bench && \
 # Install Press app with memory optimization
 RUN cd frappe-bench && \
     if [ ! -d "apps/press" ]; then \
-        NODE_OPTIONS="--max-old-space-size=4096" /home/frappe/.local/bin/bench get-app --resolve-deps press; \
+        NODE_OPTIONS="--max-old-space-size=8192" /home/frappe/.local/bin/bench get-app --resolve-deps press; \
     fi 
 
 WORKDIR /home/frappe/frappe-bench
