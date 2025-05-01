@@ -77,7 +77,7 @@ RUN /home/frappe/.local/bin/bench init frappe-bench --python python3.10 --skip-r
 # Install Frappe framework (skip if already exists)
 RUN cd frappe-bench && \
    if [ ! -d "apps/frappe" ]; then \
-       /home/frappe/.local/bin/bench get-app frappe \
+       /home/frappe/.local/bin/bench get-app frappe; \
    fi
 
 # # Create the Press app if it doesn't exist (bypass interactive prompt)
