@@ -70,16 +70,18 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && \
 RUN python3.10 -m pip install frappe-bench
 
 # Initialize Bench with explicit Python version
-RUN /home/frappe/.local/bin/bench init frappe-bench --python python3.10 --skip-redis-config-generation && \
-    cd frappe-bench && \
-    ./env/bin/pip install gunicorn && \
-    /home/frappe/.local/bin/bench setup requirements
+RUN /home/frappe/.local/bin/bench init frappe-bench --skip-redis-config-generation
+
+
+RUN cd frappe-bench && \
+./env/bin/pip install gunicorn && \
+/home/frappe/.local/bin/bench setup requirements
 
 # Install Frappe framework (skip if already exists)
-RUN cd frappe-bench && \
-   if [ ! -d "apps/frappe" ]; then \
-       /home/frappe/.local/bin/bench get-app frappe; \
-   fi
+# RUN cd frappe-bench && \
+#    if [ ! -d "apps/frappe" ]; then \
+#        /home/frappe/.local/bin/bench get-app frappe; \
+#    fi
 
 # # Create the Press app if it doesn't exist (bypass interactive prompt)
 # # Install the Press app with --resolve-deps to handle missing dependencies
@@ -88,9 +90,7 @@ RUN cd frappe-bench && \
 #         /home/frappe/.local/bin/bench get-app press; \
 #     fi 
 
-
-
-WORKDIR /home/frappe/frappe-bench
+WORKDIR /home/frappe/frappe-bench/sites
 
 COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
 COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
@@ -99,6 +99,7 @@ RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
 USER frappe
 
 EXPOSE 8000 9000 2200 8088
+
 CMD [ \
   "/home/frappe/frappe-bench/env/bin/gunicorn", \
   "--chdir=/home/frappe/frappe-bench/sites", \

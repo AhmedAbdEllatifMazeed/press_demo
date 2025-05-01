@@ -113,7 +113,6 @@ services:
         wait-for-it -t 120 db:3306;
         wait-for-it -t 120 redis-cache:6379;
         wait-for-it -t 120 redis-queue:6379;
-        cd sites;
         export start=$(date +%s);
         until [[ -n $(grep -hs ^ sites/common_site_config.json | jq -r ".db_host // empty") ]] && 
               [[ -n $(grep -hs ^ sites/common_site_config.json | jq -r ".redis_cache // empty") ]] && 
