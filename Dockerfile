@@ -77,14 +77,13 @@ RUN /home/frappe/.local/bin/bench init frappe-bench --python python3.10 --skip-r
 # Install Frappe framework (skip if already exists)
 RUN cd frappe-bench && \
    if [ ! -d "apps/frappe" ]; then \
-       /home/frappe/.local/bin/bench get-app frappe https://github.com/frappe/frappe --branch version-14; \
+       /home/frappe/.local/bin/bench get-app frappe \
    fi
 
 # # Create the Press app if it doesn't exist (bypass interactive prompt)
 # # Install the Press app with --resolve-deps to handle missing dependencies
 RUN cd frappe-bench && \
     if [ ! -d "apps/press" ]; then \
-    export NODE_OPTIONS=--max-old-space-size=4096 && \
         /home/frappe/.local/bin/bench get-app press; \
     fi 
 
