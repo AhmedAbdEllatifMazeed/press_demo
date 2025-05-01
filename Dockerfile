@@ -83,10 +83,10 @@ RUN cd frappe-bench && \
 
 # # Create the Press app if it doesn't exist (bypass interactive prompt)
 # # Install the Press app with --resolve-deps to handle missing dependencies
-RUN cd frappe-bench && \
-    if [ ! -d "apps/press" ]; then \
-        /home/frappe/.local/bin/bench get-app press; \
-    fi 
+# RUN cd frappe-bench && \
+#     if [ ! -d "apps/press" ]; then \
+#         /home/frappe/.local/bin/bench get-app press; \
+#     fi 
 
 
 
