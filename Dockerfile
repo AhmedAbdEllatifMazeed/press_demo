@@ -59,6 +59,12 @@ RUN groupadd -g 1000 frappe \
     && useradd --no-log-init -r -m -u 1000 -g 1000 -G sudo frappe \
     && echo "frappe ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+
+COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
+COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
+
+RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
+
 RUN chown frappe:frappe /var/run/supervisor    
 
 # Switch to frappe user
@@ -96,11 +102,6 @@ RUN cd frappe-bench && \
 
 WORKDIR /home/frappe/frappe-bench/sites
 
-COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
-COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
-
-RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
-USER frappe
 
 EXPOSE 8000 9000 2200 8088
 
