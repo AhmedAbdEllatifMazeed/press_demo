@@ -1,13 +1,14 @@
 # syntax = docker/dockerfile:experimental
 FROM ubuntu:22.04
 
-# Set environment variables
+# Set environment variables including Node.js memory limit
 ENV LANG=C.UTF-8 \
     DEBIAN_FRONTEND=noninteractive \
     OPENBLAS_NUM_THREADS=1 \
     MKL_NUM_THREADS=1 \
     BENCH_DIR=/home/frappe/frappe-bench \
     BENCH_NAME=frappe-bench \
+    NODE_OPTIONS="--max-old-space-size=8192" \
     PATH="/home/frappe/.local/bin:/home/frappe/frappe-bench/env/bin:$PATH"
 
 # Install system dependencies
@@ -35,59 +36,50 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get update && \
     jq wait-for-it \
     && rm -rf /var/lib/apt/lists/*
 
-
-# copy supervisord.conf    
-#COPY resources/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-
 # Install wkhtmltopdf
 RUN apt-get update && apt-get install -y wkhtmltopdf
 
-# Install Node.js 18
+# Install Node.js 18 with memory optimization
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g yarn
-
+    npm install -g yarn && \
+    npm cache clean --force && \
+    yarn cache clean
 
 RUN mkdir -p /var/run/supervisor 
 
 # Create frappe user
 RUN useradd -ms /bin/bash frappe
-
 RUN chown frappe:frappe /var/run/supervisor    
 
 # Switch to frappe user
 USER frappe
 WORKDIR /home/frappe
 
-# Install Python tools
+# Install Python tools with optimized pip cache
 RUN wget https://bootstrap.pypa.io/get-pip.py && \
     python3.10 get-pip.py && \
-    python3.10 -m pip install --upgrade pip wheel setuptools
+    python3.10 -m pip install --upgrade pip wheel setuptools && \
+    python3.10 -m pip cache purge
 
-# Install Frappe Bench
-RUN python3.10 -m pip install frappe-bench
-
-# Initialize Bench with explicit Python version
-RUN /home/frappe/.local/bin/bench init frappe-bench --python python3.10 --skip-redis-config-generation && \
+# Install Frappe Bench with optimized build
+RUN python3.10 -m pip install --no-cache-dir frappe-bench && \
+    /home/frappe/.local/bin/bench init frappe-bench --python python3.10 --skip-redis-config-generation && \
     cd frappe-bench && \
-    ./env/bin/pip install gunicorn && \
+    ./env/bin/pip install --no-cache-dir gunicorn && \
     /home/frappe/.local/bin/bench setup requirements
 
-# Install Frappe framework (skip if already exists)
+# Install Frappe framework with memory optimization
 RUN cd frappe-bench && \
    if [ ! -d "apps/frappe" ]; then \
-       /home/frappe/.local/bin/bench get-app frappe https://github.com/frappe/frappe --branch version-14; \
+       NODE_OPTIONS="--max-old-space-size=4096" /home/frappe/.local/bin/bench get-app frappe https://github.com/frappe/frappe --branch version-14; \
    fi
 
-# # Create the Press app if it doesn't exist (bypass interactive prompt)
-# # Install the Press app with --resolve-deps to handle missing dependencies
+# Install Press app with memory optimization
 RUN cd frappe-bench && \
     if [ ! -d "apps/press" ]; then \
-        /home/frappe/.local/bin/bench get-app --resolve-deps press; \
+        NODE_OPTIONS="--max-old-space-size=4096" /home/frappe/.local/bin/bench get-app --resolve-deps press; \
     fi 
-
-
 
 WORKDIR /home/frappe/frappe-bench
 
@@ -96,7 +88,6 @@ COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
 USER root
 RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
 USER frappe
-
 
 EXPOSE 8000 9000 2200 8088
 CMD [ \
@@ -109,7 +100,7 @@ CMD [ \
   "--worker-tmp-dir=/dev/shm", \
   "--timeout=120", \
   "--preload", \
-`  "frappe.app:application" \
+  "frappe.app:application" \
 ]
 
 
