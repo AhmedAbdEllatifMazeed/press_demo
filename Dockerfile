@@ -84,7 +84,7 @@ RUN cd frappe-bench && \
 # # Install the Press app with --resolve-deps to handle missing dependencies
 RUN cd frappe-bench && \
     if [ ! -d "apps/press" ]; then \
-        /home/frappe/.local/bin/bench get-app --resolve-deps press; \
+        /home/frappe/.local/bin/bench get-app press; \
     fi 
 
 
