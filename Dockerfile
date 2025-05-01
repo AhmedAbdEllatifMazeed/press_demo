@@ -84,6 +84,7 @@ RUN cd frappe-bench && \
 # # Install the Press app with --resolve-deps to handle missing dependencies
 RUN cd frappe-bench && \
     if [ ! -d "apps/press" ]; then \
+    export NODE_OPTIONS=--max-old-space-size=4096 && \
         /home/frappe/.local/bin/bench get-app press; \
     fi 
 
