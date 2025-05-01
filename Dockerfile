@@ -102,7 +102,8 @@ RUN cd frappe-bench && \
 
 WORKDIR /home/frappe/frappe-bench/sites
 
-COPY common_site_config.json .
+COPY common_site_config.json /home/frappe/frappe-bench/sites/common_site_config.json
+RUN chown frappe:frappe /home/frappe/frappe-bench/sites/common_site_config.json
 
 
 EXPOSE 8000 9000 2200 8088
