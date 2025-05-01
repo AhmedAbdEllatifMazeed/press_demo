@@ -18,8 +18,8 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - /Users/ahmed/press_docker/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
-      - /Users/ahmed/press_docker/resources/nginx.template:/templates/nginx/frappe.conf.template
+      - /home/ubuntu/press_demo/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
+      - /home/ubuntu/press_demo/resources/nginx.template:/templates/nginx/frappe.conf.template
       - ./mounts/sites:/etc/nginx/sites
       - ./mounts/assets:/etc/nginx/sites/assets
     depends_on:
@@ -208,9 +208,9 @@ volumes:
 #       - "80:8080"
 
 #     volumes:
-#      # - /Users/ahmed/press_docker/resources:/etc/nginx/conf.d
-#       - /Users/ahmed/press_docker/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
-#       - /Users/ahmed/press_docker/resources/nginx.template:/templates/nginx/frappe.conf.template
+#      # - /home/ubuntu/press_demo/resources:/etc/nginx/conf.d
+#       - /home/ubuntu/press_demo/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
+#       - /home/ubuntu/press_demo/resources/nginx.template:/templates/nginx/frappe.conf.template
 #       - ./mounts/sites:/etc/nginx/sites
 #       - ./mounts/assets:/etc/nginx/sites/assets
 #     depends_on:
