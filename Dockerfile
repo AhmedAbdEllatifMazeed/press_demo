@@ -52,8 +52,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 
 RUN mkdir -p /var/run/supervisor 
 
-# Create frappe user
-RUN useradd -ms /bin/bash frappe
+# Create new user with home directory, improve docker compatibility with UID/GID 1000,
+# add user to sudo group, allow passwordless sudo, switch to that user
+# and change directory to user home directory
+RUN groupadd -g 1000 frappe \
+    && useradd --no-log-init -r -m -u 1000 -g 1000 -G sudo frappe \
+    && echo "frappe ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN chown frappe:frappe /var/run/supervisor    
 
@@ -94,7 +98,7 @@ WORKDIR /home/frappe/frappe-bench/sites
 
 COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
 COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
-USER root
+
 RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
 USER frappe
 
