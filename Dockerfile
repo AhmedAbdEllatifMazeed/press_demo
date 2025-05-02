@@ -50,7 +50,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     npm install -g yarn
 
 
-RUN mkdir -p /var/run/supervisor 
+RUN mkdir -p /etc/supervisor/conf.d
 
 # Create new user with home directory, improve docker compatibility with UID/GID 1000,
 # add user to sudo group, allow passwordless sudo, switch to that user
@@ -60,7 +60,8 @@ RUN groupadd -g 1000 frappe \
     && echo "frappe ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 
-RUN chown frappe:frappe /var/run/supervisor    
+
+RUN chown frappe:frappe /etc/supervisor/conf.d   
 
 # Switch to frappe user
 USER frappe
@@ -98,6 +99,7 @@ RUN cd frappe-bench && \
 WORKDIR /home/frappe/frappe-bench/sites
 
 COPY common_site_config.json /home/frappe/frappe-bench/sites/common_site_config.json
+#COPY resources/supervisor.conf /etc/supervisor/conf.d/frappe-bench.conf
 
 
 EXPOSE 8000 9000 2200 8088
