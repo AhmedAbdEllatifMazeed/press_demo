@@ -61,8 +61,10 @@ RUN groupadd -g 1000 frappe \
 
 
 
-RUN chown frappe:frappe /etc/supervisor/conf.d   
-RUN chown frappe:frappe /var/run/supervisor.sock
+RUN chown frappe:frappe /etc/supervisor/conf.d 
+COPY resources/supervisord.conf /etc/supervisor/supervisord.conf
+
+
 # Switch to frappe user
 USER frappe
 WORKDIR /home/frappe

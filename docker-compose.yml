@@ -83,8 +83,6 @@ services:
         bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
-        bench setup supervisor;
-        ln -s ../config/supervisor.conf /etc/supervisor/conf.d/frappe-bench.conf;
     environment:
       DB_HOST: db
       DB_PORT: "3306"
