@@ -16,8 +16,6 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - /home/ubuntu/press_demo/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
-      - /home/ubuntu/press_demo/resources/nginx.template:/templates/nginx/frappe.conf.template
       - ./mounts/sites:/etc/nginx/sites
       - ./mounts/assets:/etc/nginx/sites/assets
     depends_on:
