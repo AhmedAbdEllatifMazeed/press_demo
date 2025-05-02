@@ -4,6 +4,7 @@ services:
   # TODO: Remove NGINX service in production
   nginx:
     image: nginx:1.19
+    user: 1000:1000
     command:
       - nginx-entrypoint.sh
     environment:

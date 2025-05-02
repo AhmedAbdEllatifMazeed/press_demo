@@ -60,11 +60,6 @@ RUN groupadd -g 1000 frappe \
     && echo "frappe ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 
-COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
-COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
-
-RUN chmod +x /usr/local/bin/nginx-entrypoint.sh
-
 RUN chown frappe:frappe /var/run/supervisor    
 
 # Switch to frappe user
