@@ -84,7 +84,7 @@ services:
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
         bench setup supervisor;
-        sudo ln -s "../config/supervisor.conf" /etc/supervisor/conf.d/;
+        ln -s "../config/supervisor.conf" /etc/supervisor/conf.d/;
     environment:
       DB_HOST: db
       DB_PORT: "3306"
