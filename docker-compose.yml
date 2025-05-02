@@ -3,10 +3,7 @@ version: "3.8"
 services:
   # TODO: Remove NGINX service in production
   nginx:
-    image: nginx:1.19
-    user: 1000:1000
-    command:
-      - nginx-entrypoint.sh
+    image: custom_nginx:latest
     environment:
       BACKEND: backend:8000
       FRAPPE_SITE_NAME_HEADER: frontend
