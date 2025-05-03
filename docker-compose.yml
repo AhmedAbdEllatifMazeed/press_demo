@@ -22,7 +22,7 @@ services:
       - frontend
 
   backend:
-    image: press_demo:latest
+    image: frappe_demo:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -31,7 +31,7 @@ services:
       - ./mounts/logs:/home/frappe/frappe-bench/logs
 
   frontend:
-    image: press_demo:latest
+    image: frappe_demo:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -67,7 +67,7 @@ services:
       - ./mounts/db-data:/var/lib/mysql
 
   configurator:
-    image: press_demo:latest
+    image: frappe_demo:latest
     deploy:
       restart_policy:
         condition: none
@@ -94,7 +94,7 @@ services:
       - ./mounts/logs:/home/frappe/frappe-bench/logs
 
   create-site:
-    image: press_demo:latest
+    image: frappe_demo:latest
     deploy:
       restart_policy:
         condition: none
@@ -126,7 +126,7 @@ services:
 #bench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnext --set-default frontend;
 
   websocket:
-    image: press_demo:latest
+    image: frappe_demo:latest
     command: ["node", "/home/frappe/frappe-bench/apps/frappe/socketio.js"]
     working_dir: /home/frappe/frappe-bench
     volumes:
@@ -136,7 +136,7 @@ services:
       - redis-socketio
 
   worker_default:
-    image: press_demo:latest
+    image: frappe_demo:latest
     command: ["bench", "worker", "--queue", "default"]
     volumes:
       - ./mounts/sites:/home/frappe/frappe-bench/sites
@@ -147,7 +147,7 @@ services:
       - redis-socketio
 
   queue-long:
-    image: press_demo:latest
+    image: frappe_demo:latest
     command: ["bench", "worker", "--queue", "long"]
     volumes:
       - ./mounts/sites:/home/frappe/frappe-bench/sites
@@ -158,7 +158,7 @@ services:
       - redis-socketio
 
   queue-short:
-    image: press_demo:latest
+    image: frappe_demo:latest
     command: ["bench", "worker", "--queue", "short"]
     volumes:
       - ./mounts/sites:/home/frappe/frappe-bench/sites
@@ -205,9 +205,9 @@ volumes:
 #       - "80:8080"
 
 #     volumes:
-#      # - /home/ubuntu/press_demo/resources:/etc/nginx/conf.d
-#       - /home/ubuntu/press_demo/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
-#       - /home/ubuntu/press_demo/resources/nginx.template:/templates/nginx/frappe.conf.template
+#      # - /home/ubuntu/frappe_demo/resources:/etc/nginx/conf.d
+#       - /home/ubuntu/frappe_demo/resources/nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh
+#       - /home/ubuntu/frappe_demo/resources/nginx.template:/templates/nginx/frappe.conf.template
 #       - ./mounts/sites:/etc/nginx/sites
 #       - ./mounts/assets:/etc/nginx/sites/assets
 #     depends_on:
@@ -215,7 +215,7 @@ volumes:
 
 
 #   backend:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     deploy:
 #       restart_policy:
 #         condition: on-failure
@@ -224,7 +224,7 @@ volumes:
 #       - ./mounts/logs:/home/frappe/frappe-bench/logs
 
 #   frontend:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     deploy:
 #       restart_policy:
 #         condition: on-failure
@@ -267,7 +267,7 @@ volumes:
 
 
 #   configurator:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     deploy:
 #       restart_policy:
 #         condition: none
@@ -296,7 +296,7 @@ volumes:
 
   
 #   create-site:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     deploy:
 #       restart_policy:
 #         condition: none
@@ -332,7 +332,7 @@ volumes:
 
 
 #   websocket:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     command: ["node", "/home/frappe/frappe-bench/apps/frappe/socketio.js"]
 #     working_dir: /home/frappe/frappe-bench
 #     # ports:
@@ -345,7 +345,7 @@ volumes:
 
 
 #   worker_default:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     command: ["bench", "worker", "--queue", "default"]
 #     volumes:
 #       - sites:/home/frappe/frappe-bench/sites
@@ -355,7 +355,7 @@ volumes:
 #       - redis-queue
 #       - redis-socketio
 #   queue-long:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     command: ["bench", "worker", "--queue", "long"]
 #     volumes:
 #       - sites:/home/frappe/frappe-bench/sites
@@ -365,7 +365,7 @@ volumes:
 #       - redis-queue
 #       - redis-socketio
 #   queue-short:
-#     image: press_demo:latest
+#     image: frappe_demo:latest
 #     command: ["bench", "worker", "--queue", "short"]
 #     volumes:
 #       - sites:/home/frappe/frappe-bench/sites
