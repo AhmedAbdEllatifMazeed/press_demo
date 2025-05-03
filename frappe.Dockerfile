@@ -1,4 +1,4 @@
-FROM frappe/build:latest
+FROM frappe/bench:latest
 
 
 
