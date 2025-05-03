@@ -12,6 +12,8 @@ RUN cd frappe-bench && \
 
 COPY common_site_config.json /home/frappe/frappe-bench/sites/common_site_config.json
 
+WORKDIR /home/frappe/frappe-bench/sites
+
 EXPOSE 8000 9000 2200 8088
 
 CMD [ \
